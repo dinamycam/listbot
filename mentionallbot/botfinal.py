@@ -180,8 +180,8 @@ async def everyone(update: Update, context: ContextTypes.DEFAULT_TYPE):
         member = await context.bot.get_chat_member(chat.id, user.id)
     except Exception:
         return
-    if member.status not in ("administrator", "creator"):
-        await update.message.reply_text("Only group admins can use /everyone.")
+    if member.status not in ("administrator", "creator", "member"):
+        await update.message.reply_text("فقط اعضای گروه میتونن /all بزنن.")
         return
 
     # ensure admins included
@@ -213,7 +213,7 @@ async def everyone(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "I will record users who send messages or trigger membership changes. Admins can use /everyone."
+        "I will record users who send messages or trigger membership changes. Any member can use /all."
     )
 
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
 
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start_cmd))
-    app.add_handler(CommandHandler("everyone", everyone))
+    app.add_handler(CommandHandler("all", everyone))
     app.add_handler(CommandHandler("prune", prune_cmd))
     app.add_handler(MessageHandler(filters.ALL & (~filters.COMMAND), message_collector))
     app.add_handler(
