@@ -1,5 +1,7 @@
 import asyncio
 import html
+import os
+import sys
 import time
 
 import aiosqlite
@@ -16,7 +18,10 @@ from telegram.ext import (
 # from datetime import datetime, timezone
 
 
-TOKEN = "431134455:AAGAMnDdZoHWF_iwXJybZCieScl7hRGdAwA"
+TOKEN = os.getenv("TG_TOKEN")
+if not TOKEN:
+    print("Error: TG_TOKEN environment variable not set", file=sys.stderr)
+    sys.exit(1)
 DB = "members_normalized.db"
 BATCH_SIZE = 25
 DELAY_SEC = 1.2
